@@ -3,7 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Layanan</title>
+
+    <!-- ============ JUDUL & DESKRIPSI (muncul di tab browser & hasil pencarian Google) ============ -->
+    <title>DAGISOS - Dashboard Digital Dinas Sosial Kota Bima</title>
+    <meta name="description" content="DAGISOS adalah Dashboard Digital Dinas Sosial Kota Bima untuk pengelolaan data PKH, BPJS Kesehatan, dan Stok Barang Bantuan secara terpadu.">
+    <meta name="keywords" content="DAGISOS, Dinas Sosial Kota Bima, Dashboard Digital, PKH, BPJS, Bantuan Sosial">
+    <meta name="author" content="Dinas Sosial Kota Bima">
+    <link rel="canonical" href="https://dashboarddinsos.my.id/">
+
+    <!-- ============ FAVICON - pakai logo TULISAN DAGISOS (langsung aktif tanpa
+         upload file terpisah, karena ditanam langsung di dalam HTML ini) ============ -->
+    <link rel="icon" type="image/png" sizes="64x64" href="data:image/png;base64,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">
+    <!-- Kalau file PNG di bawah ini sudah Anda upload ke folder yang sama dengan
+         index.html ini, baris-baris ini dipakai browser untuk ikon yang lebih
+         presisi di berbagai perangkat (opsional, tapi disarankan diupload juga) -->
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+
+    <!-- ============ OPEN GRAPH (tampilan saat link dibagikan di WhatsApp/Facebook/dll,
+         dan salah satu sinyal yang dipakai Google untuk pratinjau pencarian) ============ -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="DAGISOS">
+    <meta property="og:title" content="DAGISOS - Dashboard Digital Dinas Sosial Kota Bima">
+    <meta property="og:description" content="Dashboard digital untuk pengelolaan data PKH, BPJS, dan Stok Barang Bantuan Dinas Sosial Kota Bima.">
+    <meta property="og:image" content="https://dashboarddinsos.my.id/dagisos-logo-google.png">
+    <meta property="og:url" content="https://dashboarddinsos.my.id/">
+    <meta property="og:locale" content="id_ID">
+
+    <!-- ============ TWITTER CARD ============ -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="DAGISOS - Dashboard Digital Dinas Sosial Kota Bima">
+    <meta name="twitter:description" content="Dashboard digital untuk pengelolaan data PKH, BPJS, dan Stok Barang Bantuan Dinas Sosial Kota Bima.">
+    <meta name="twitter:image" content="https://dashboarddinsos.my.id/dagisos-logo-google.png">
+
+    <!-- ============ DATA TERSTRUKTUR (schema.org) - ini yang dibaca Google untuk
+         mengenali "DAGISOS" sebagai nama resmi + logo instansi ============ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "GovernmentOrganization",
+      "name": "DAGISOS - Dashboard Digital Dinas Sosial Kota Bima",
+      "alternateName": "DAGISOS",
+      "url": "https://dashboarddinsos.my.id/",
+      "logo": "https://dashboarddinsos.my.id/dagisos-logo-google.png",
+      "description": "Dashboard digital untuk pengelolaan data PKH, BPJS Kesehatan, dan Stok Barang Bantuan Dinas Sosial Kota Bima."
+    }
+    </script>
+
     <style>
         html, body {
             margin: 0;
@@ -24,7 +71,7 @@
 <body>
 
     <!-- Link Apps Script Anda otomatis memuat penuh di halaman -->
-    <iframe src="https://script.google.com/macros/s/AKfycbycR7COzWj050tZdKwh6AfZmSLVg0j2sm4xnp_BojMJwuR4684lhatmN6HQb5Fjs7CPQQ/exec"></iframe>
+    <iframe src="https://script.google.com/macros/s/AKfycbycR7COzWj050tZdKwh6AfZmSLVg0j2sm4xnp_BojMJwuR4684lhatmN6HQb5Fjs7CPQQ/exec" title="DAGISOS - Dashboard Digital Dinas Sosial Kota Bima"></iframe>
 
 </body>
 </html>
