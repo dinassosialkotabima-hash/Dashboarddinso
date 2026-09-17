@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 
     <!-- ============ JUDUL & DESKRIPSI (muncul di tab browser & hasil pencarian Google) ============ -->
     <title>DAGISOS - Dashboard Digital Dinas Sosial Kota Bima</title>
@@ -59,10 +59,15 @@
             height: 100%;
             overflow: hidden;
             background-color: #ffffff;
+            overscroll-behavior: none;
         }
-        iframe {
+        #dagisos-frame {
             width: 100%;
-            height: 100%;
+            /* Fallback CSS kalau JavaScript di bawah gagal jalan (mis. browser
+               lawas) - 100dvh lebih akurat daripada 100vh di HP karena
+               memperhitungkan address bar yang muncul/hilang saat scroll. */
+            height: 100vh;
+            height: 100dvh;
             border: none;
             display: block;
         }
@@ -71,7 +76,40 @@
 <body>
 
     <!-- Link Apps Script Anda otomatis memuat penuh di halaman -->
-    <iframe src="https://script.google.com/macros/s/AKfycbycR7COzWj050tZdKwh6AfZmSLVg0j2sm4xnp_BojMJwuR4684lhatmN6HQb5Fjs7CPQQ/exec" title="DAGISOS - Dashboard Digital Dinas Sosial Kota Bima"></iframe>
+    <iframe
+        id="dagisos-frame"
+        src="https://script.google.com/macros/s/AKfycbycR7COzWj050tZdKwh6AfZmSLVg0j2sm4xnp_BojMJwuR4684lhatmN6HQb5Fjs7CPQQ/exec"
+        title="DAGISOS - Dashboard Digital Dinas Sosial Kota Bima"
+        allow="clipboard-write"
+    ></iframe>
+
+    <script>
+        // PERBAIKAN UTAMA UNTUK TAMPILAN MOBILE:
+        // Saat URL .../exec dibuka, Google Apps Script sebenarnya merender
+        // isinya di dalam IFRAME INTERNAL miliknya sendiri (domain
+        // googleusercontent.com). Jadi strukturnya jadi 2 lapis iframe:
+        // [halaman ini] > [iframe kita, script.google.com] > [iframe internal Google].
+        // Rantai CSS "height: 100%" sering GAGAL menembus 2 lapis iframe
+        // bersarang ini secara konsisten di Safari/Chrome mobile (apalagi
+        // saat address bar HP muncul/hilang ketika discroll), sehingga
+        // iframe bisa jadi terlalu pendek dan bikin tampilan di dalamnya
+        // terlihat "berantakan"/terpotong. Solusinya: ukur tinggi layar
+        // sungguhan lewat JavaScript, lalu paksa tinggi iframe mengikuti
+        // itu - jauh lebih akurat daripada mengandalkan CSS persen saja.
+        function sesuaikanTinggiFrame() {
+            var frame = document.getElementById('dagisos-frame');
+            // window.innerHeight = tinggi viewport SUNGGUHAN yang sedang
+            // terlihat di layar (sudah memperhitungkan address bar HP).
+            frame.style.height = window.innerHeight + 'px';
+        }
+        sesuaikanTinggiFrame();
+        window.addEventListener('resize', sesuaikanTinggiFrame);
+        window.addEventListener('orientationchange', function () {
+            // Beri jeda sedikit karena beberapa browser HP butuh waktu
+            // singkat untuk update window.innerHeight setelah rotasi.
+            setTimeout(sesuaikanTinggiFrame, 300);
+        });
+    </script>
 
 </body>
 </html>
