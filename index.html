@@ -84,29 +84,33 @@
     ></iframe>
 
     <script>
-        // PERBAIKAN UTAMA UNTUK TAMPILAN MOBILE:
+        // PERBAIKAN TAMPILAN MOBILE:
         // Saat URL .../exec dibuka, Google Apps Script sebenarnya merender
         // isinya di dalam IFRAME INTERNAL miliknya sendiri (domain
-        // googleusercontent.com). Jadi strukturnya jadi 2 lapis iframe:
-        // [halaman ini] > [iframe kita, script.google.com] > [iframe internal Google].
-        // Rantai CSS "height: 100%" sering GAGAL menembus 2 lapis iframe
-        // bersarang ini secara konsisten di Safari/Chrome mobile (apalagi
-        // saat address bar HP muncul/hilang ketika discroll), sehingga
-        // iframe bisa jadi terlalu pendek dan bikin tampilan di dalamnya
-        // terlihat "berantakan"/terpotong. Solusinya: ukur tinggi layar
-        // sungguhan lewat JavaScript, lalu paksa tinggi iframe mengikuti
-        // itu - jauh lebih akurat daripada mengandalkan CSS persen saja.
+        // googleusercontent.com). CSS "height: 100dvh" di atas SUDAH CUKUP
+        // untuk membuat iframe menyesuaikan tinggi layar HP secara otomatis
+        // (termasuk saat address bar HP muncul/hilang) TANPA butuh JavaScript
+        // sama sekali, karena unit "dvh" memang dirancang khusus untuk itu.
+        //
+        // Script ini HANYA dipakai sebagai cadangan untuk browser lama yang
+        // belum mendukung "dvh", dan HANYA dijalankan saat halaman pertama
+        // dibuka + saat layar benar-benar diputar (orientationchange) -
+        // SENGAJA TIDAK memakai event 'resize', karena 'resize' bisa
+        // terpicu berkali-kali hanya karena address bar HP muncul/hilang
+        // saat scroll (bukan perubahan ukuran sungguhan). Kalau tinggi
+        // iframe diatur ulang setiap kali itu terjadi, halaman di dalam
+        // iframe bisa ikut memuat ulang berkali-kali dan macet di
+        // "Memuat..." terus-menerus, terutama di koneksi lambat.
+        function dukunganDvh() {
+            return CSS && CSS.supports && CSS.supports('height', '100dvh');
+        }
         function sesuaikanTinggiFrame() {
+            if (dukunganDvh()) return; // biarkan CSS yang urus
             var frame = document.getElementById('dagisos-frame');
-            // window.innerHeight = tinggi viewport SUNGGUHAN yang sedang
-            // terlihat di layar (sudah memperhitungkan address bar HP).
             frame.style.height = window.innerHeight + 'px';
         }
         sesuaikanTinggiFrame();
-        window.addEventListener('resize', sesuaikanTinggiFrame);
         window.addEventListener('orientationchange', function () {
-            // Beri jeda sedikit karena beberapa browser HP butuh waktu
-            // singkat untuk update window.innerHeight setelah rotasi.
             setTimeout(sesuaikanTinggiFrame, 300);
         });
     </script>
